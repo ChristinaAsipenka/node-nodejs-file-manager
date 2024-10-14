@@ -12,6 +12,7 @@ import { moveFile } from './moveFile.js';
 import { deleteFile } from './deleteFile.js';
 import { calculateHash } from './calculateHash.js';
 import { compressFile, decompressFile } from './compressDecompress.js';
+import { printHelp } from './help.js';
 import {
     printEOL,
     printCPUArchitecture,
@@ -31,6 +32,7 @@ args.forEach(arg => {
 
 async function greetUser() {
     console.log(colorForText.Yellow, `Welcome to the File Manager, ${username}!`);
+    console.log(colorForText.Yellow, `Type "help" to see all available commands`);
 }
 
 // END script
@@ -165,6 +167,9 @@ async function main() {
                 } else {
                     console.log(colorForText.Red, 'Invalid input: decompress requires a source file path and a destination path');
                 }
+                break;
+            case 'help':
+                printHelp();
                 break;
 
             default:

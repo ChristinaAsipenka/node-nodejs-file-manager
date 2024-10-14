@@ -3,28 +3,31 @@ import fs from 'node:fs/promises';
 export async function listDirectoryContents() {
     try {
         const items = await fs.readdir(process.cwd(), { withFileTypes: true });
-        const directories = [];
-        const files = [];
+        const content = [];
 
         for (const item of items) {
             if (item.isDirectory()) {
-                directories.push(`${item.name}/`);
+                content.push({ name: item.name, type: 'directory' });
             } else if (item.isFile()) {
-                files.push(item.name);
+                content.push({ name: item.name, type: 'file' });
             }
         }
+        
+        content.sort((a, b) => {
+            if (a.type === b.type) {
+                return a.name.localeCompare(b.name);
+            }
+            return a.type === 'directory' ? -1 : 1;
+        });
 
-        directories.sort();
-        files.sort();
+        console.log('Index | Name                | Type');
+        console.log('-----------------------------------');
 
-        console.log('Directories:');
-        directories.forEach(dir => console.log(`   ${dir}`));
-
-        console.log('Files:');
-        files.forEach(file => console.log(`   ${file}`));
+        content.forEach((item, index) => {
+            console.log(`${index + 1}     | ${item.name.padEnd(20)} | ${item.type}`);
+        });
 
     } catch (error) {
-        console.log(error.message);
-        console.log('Operation failed: Unable to read directory');
+        console.log('Operation failed: Unable to read directory', error.message);
     }
 }
