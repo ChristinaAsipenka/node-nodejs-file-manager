@@ -38,7 +38,7 @@
 - [x] **+20** Codebase is written in ESM modules instead of CommonJS
 - [x] **+20** Codebase is separated
 
-Type "help" to see all available commands
+# Type "help" to see all available commands #
 
 330/330
 
