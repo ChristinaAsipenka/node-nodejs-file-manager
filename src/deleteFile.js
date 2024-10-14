@@ -1,6 +1,6 @@
-import fs from 'fs/promises';
-import path from 'path';
-import {colorForText} from "./messageColors.js";
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { colorForText } from "./messageColors.js";
 
 export async function deleteFile(filePath) {
     const absoluteFilePath = path.isAbsolute(filePath) ? filePath : path.resolve(process.cwd(), filePath);

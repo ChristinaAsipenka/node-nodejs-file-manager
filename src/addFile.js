@@ -1,6 +1,6 @@
-import path from 'path';
+import path from 'node:path';
 import fs from 'fs/promises';
-import {colorForText} from "./messageColors.js";
+import { colorForText } from "./messageColors.js";
 
 export async function addFile(fileName) {
     const filePath = path.resolve(process.cwd(), fileName);

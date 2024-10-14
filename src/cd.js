@@ -1,6 +1,6 @@
-import path from "path";
-import {promises as fs} from "fs";
-import {colorForText} from "./messageColors.js";
+import path from "node:path";
+import { promises as fs } from "node:fs";
+import { colorForText } from "./messageColors.js";
 
 export async function changeDirectory(dir) {
     try {

@@ -1,5 +1,5 @@
 import path from 'path';
-import { createReadStream } from 'fs';
+import { createReadStream } from 'node:fs';
 
 export async function catFile(filePath) {
     const absolutePath = path.isAbsolute(filePath) ? filePath : path.resolve(process.cwd(), filePath);

@@ -1,4 +1,4 @@
-import path from "path";
+import path from "node:path";
 import { changeDirectory } from "./cd.js";
 
 export async function goUp() {

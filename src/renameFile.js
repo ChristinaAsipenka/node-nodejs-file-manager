@@ -1,6 +1,6 @@
-import fs from 'fs/promises';
-import path from 'path';
-import {colorForText} from "./messageColors.js";
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { colorForText } from "./messageColors.js";
 
 export async function renameFile(oldFilePath, newFileName) {
     const absoluteOldPath = path.isAbsolute(oldFilePath) ? oldFilePath : path.resolve(process.cwd(), oldFilePath);

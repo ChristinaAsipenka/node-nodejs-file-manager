@@ -1,7 +1,7 @@
-import {createReadStream, createWriteStream} from 'fs';
-import path from 'path';
-import fs from 'fs/promises';
-import {colorForText} from "./messageColors.js";
+import { createReadStream, createWriteStream } from 'node:fs';
+import path from 'node:path';
+import fs from 'node:fs/promises';
+import { colorForText } from "./messageColors.js";
 
 export async function copyFile(sourceFilePath, destinationDirectory) {
     const absoluteSourcePath = path.isAbsolute(sourceFilePath) ? sourceFilePath : path.resolve(process.cwd(), sourceFilePath);

@@ -1,10 +1,7 @@
-import readline from 'readline';
+import readline from 'node:readline';
 import os from 'os';
-import path from 'path';
-import fs from 'fs/promises';
 import { colorForText } from "./messageColors.js";
 import { catFile } from './catFile.js'
-
 import { changeDirectory } from './cd.js';
 import { goUp } from './goUp.js';
 import { listDirectoryContents } from './listDirectory.js';
@@ -13,6 +10,15 @@ import { renameFile } from './renameFile.js';
 import { copyFile } from './copyFile.js';
 import { moveFile } from './moveFile.js';
 import { deleteFile } from './deleteFile.js';
+import { calculateHash } from './calculateHash.js';
+import { compressFile, decompressFile } from './compressDecompress.js';
+import {
+    printEOL,
+    printCPUArchitecture,
+    printSystemUsername,
+    printHomeDirectory,
+    printCPUs
+} from './os.js';
 
 const args = process.argv.slice(2);
 let username = 'Anonymous';
@@ -24,16 +30,17 @@ args.forEach(arg => {
 });
 
 async function greetUser() {
-    console.log(`Welcome to the File Manager, ${username}!`);
+    console.log(colorForText.Yellow, `Welcome to the File Manager, ${username}!`);
 }
+
 // END script
 async function exitProgram() {
-    console.log(`Thank you for using File Manager, ${username}, goodbye!`);
+    console.log(colorForText.Blue,`Thank you for using File Manager, ${username}, goodbye!`);
     process.exit(0);
 }
 
 async function printWorkingDirectory() {
-    console.log(`You are currently in ${process.cwd()}`);
+    console.log(colorForText.Magenta, `You are currently in ${process.cwd()}`);
 }
 
 async function setHomeDirectory() {
@@ -123,12 +130,48 @@ async function main() {
                     console.log(colorForText.Red, 'Invalid input: rm requires a file path');
                 }
                 break;
+            case 'os':
+                if (args[0] === '--EOL') {
+                    printEOL();
+                } else if (args[0] === '--cpus') {
+                    printCPUs();
+                } else if (args[0] === '--homedir') {
+                    printHomeDirectory();
+                } else if (args[0] === '--username') {
+                    printSystemUsername();
+                } else if (args[0] === '--architecture') {
+                    printCPUArchitecture();
+                } else {
+                    console.log(colorForText.Red, 'Invalid input: Supported formats are os --EOL, --cpus, --homedir, --username, --architecture');
+                }
+                break;
+            case 'hash':
+                if (args.length === 1) {
+                    await calculateHash(args[0]);
+                } else {
+                    console.log(colorForText.Red, 'Invalid input: hash requires a file path');
+                }
+                break;
+                if (args.length === 2) {
+                    await compressFile(args[0], args[1]);
+                } else {
+                    console.log(colorForText.Red, 'Invalid input: compress requires a source file path and a destination path');
+                }
+                break;
+
+            case 'decompress':
+                if (args.length === 2) {
+                    await decompressFile(args[0], args[1]);
+                } else {
+                    console.log(colorForText.Red, 'Invalid input: decompress requires a source file path and a destination path');
+                }
+                break;
 
             default:
                 console.log(colorForText.Red, 'Invalid input: Unknown command');
         }
         await printWorkingDirectory();
-        rl.prompt(); // Ожидание следующей команды
+        rl.prompt();
     });
 
     // Finish Ctrl + C
@@ -137,5 +180,4 @@ async function main() {
     });
 }
 
-// Запуск программы
 main().catch(err => console.error('Operation failed:', err));
